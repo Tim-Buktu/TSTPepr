@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { createContext, useContext } from 'react'
-import { useSession } from 'next-auth/react'
+import { createContext, useContext } from "react";
+import { useSession } from "next-auth/react";
 
 interface AuthContextType {
   user: {
@@ -13,19 +13,22 @@ interface AuthContextType {
   loading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true })
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  loading: true,
+});
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession();
 
-  const loading = status === 'loading'
-  const user = session?.user || null
+  const loading = status === "loading";
+  const user = session?.user || null;
 
   return (
     <AuthContext.Provider value={{ user, loading }}>
       {!loading && children}
     </AuthContext.Provider>
-  )
+  );
 }
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);

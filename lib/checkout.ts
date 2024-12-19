@@ -16,7 +16,10 @@ export function formatToIDR(price: number) {
   }).format(price);
 }
 
-export async function navigateToCheckout(router: AppRouterInstance, params: CheckoutParams): Promise<void> {
+export async function navigateToCheckout(
+  router: AppRouterInstance,
+  params: CheckoutParams
+): Promise<void> {
   try {
     console.log("Navigating to checkout with params:", params); // Debug log
 

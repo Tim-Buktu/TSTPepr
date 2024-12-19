@@ -11,7 +11,7 @@ interface SessionUser {
   id: string;
   email: string;
   name: string;
-  image?: string;  // Make image optional
+  image?: string; // Make image optional
 }
 
 export function Navigation() {
@@ -24,7 +24,7 @@ export function Navigation() {
     if (user?.image && user.image.startsWith("https://")) {
       return user.image;
     }
-    return "/avatar-placeholder.png";  // fallback image
+    return "/avatar-placeholder.png"; // fallback image
   };
 
   const handleProfileClick = async () => {

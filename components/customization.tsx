@@ -103,7 +103,10 @@ export function Customization() {
         imageUrl: "/measurement.jpg",
       });
     } catch (error: unknown) {
-      console.error('Navigation error:', error instanceof Error ? error.message : 'Unknown error');
+      console.error(
+        "Navigation error:",
+        error instanceof Error ? error.message : "Unknown error"
+      );
     }
   };
 
@@ -164,19 +167,19 @@ export function Customization() {
           </div>
         </div>
         <div className="max-w-sm mx-auto">
-            <button
-              type="button"
-              onClick={handleBuyNow}
-              className="w-full bg-white text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={loading || !userData?.height || !userData?.weight}
-            >
-              {loading
-                ? "Loading..."
-                : !userData?.height || !userData?.weight
-                ? "Complete Profile to Order"
-                : `Buy Now - ${formatToIDR(calculatePrice())}`}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleBuyNow}
+            className="w-full bg-white text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={loading || !userData?.height || !userData?.weight}
+          >
+            {loading
+              ? "Loading..."
+              : !userData?.height || !userData?.weight
+              ? "Complete Profile to Order"
+              : `Buy Now - ${formatToIDR(calculatePrice())}`}
+          </button>
+        </div>
       </div>
     </section>
   );
