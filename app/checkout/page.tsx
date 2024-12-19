@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from 'react';
 import { Navigation } from "@/components/navigation";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -7,7 +8,7 @@ import Image from "next/image";
 import { formatToIDR } from "@/lib/checkout";
 import { PaymentSuccessModal } from "@/components/payment-success-modal";
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const searchParams = useSearchParams();
   const [selectedDelivery, setSelectedDelivery] = useState("delivery");
   const [agreed, setAgreed] = useState(false);
@@ -265,5 +266,13 @@ export default function CheckoutPage() {
         }}
       />
     </main>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CheckoutContent />
+    </Suspense>
   );
 }

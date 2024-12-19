@@ -6,16 +6,25 @@ import { usePathname, useRouter } from "next/navigation";
 import { MobileMenu } from "./mobile-menu";
 import { useSession, signOut } from "next-auth/react";
 
+// Add type for session user
+interface SessionUser {
+  id: string;
+  email: string;
+  name: string;
+  image?: string;  // Make image optional
+}
+
 export function Navigation() {
   const { data: session, status } = useSession();
   const pathname = usePathname();
   const router = useRouter();
 
   const getProfileImage = () => {
-    if (session?.user?.image && session.user.image.startsWith("https://")) {
-      return session.user.image;
+    const user = session?.user as SessionUser | undefined;
+    if (user?.image && user.image.startsWith("https://")) {
+      return user.image;
     }
-    return "/beared.png";
+    return "/avatar-placeholder.png";  // fallback image
   };
 
   const handleProfileClick = async () => {

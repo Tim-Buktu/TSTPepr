@@ -4,15 +4,15 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { User } from "@prisma/client";
+import { formatToIDR, navigateToCheckout } from "@/lib/checkout";
 import { useRouter } from "next/navigation";
-import { navigateToCheckout, formatToIDR } from "@/lib/checkout";
 
 export function Customization() {
   const { data: session } = useSession();
-  const router = useRouter();
   const [userData, setUserData] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [bmi, setBmi] = useState<number | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -96,19 +96,14 @@ export function Customization() {
 
     try {
       console.log("Attempting navigation...");
-      const params = new URLSearchParams({
-        product: "Custom Fitted Pants",
-        price: price.toString(),
-        quantity: "1",
-        image: "/measurement.jpg",
+      await navigateToCheckout(router, {
+        productName: "Custom Fitted Pants",
+        price: price,
+        quantity: 1,
+        imageUrl: "/measurement.jpg",
       });
-
-      const url = `/checkout?${params.toString()}`;
-      console.log("Navigation URL:", url);
-
-      await router.push(url);
-    } catch (error) {
-      console.error("Navigation error:", error);
+    } catch (error: unknown) {
+      console.error('Navigation error:', error instanceof Error ? error.message : 'Unknown error');
     }
   };
 

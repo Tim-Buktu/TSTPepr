@@ -1,4 +1,4 @@
-import { type Router } from "next/navigation";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 interface CheckoutParams {
   productName: string;
@@ -16,7 +16,7 @@ export function formatToIDR(price: number) {
   }).format(price);
 }
 
-export function navigateToCheckout(router: Router, params: CheckoutParams) {
+export async function navigateToCheckout(router: AppRouterInstance, params: CheckoutParams): Promise<void> {
   try {
     console.log("Navigating to checkout with params:", params); // Debug log
 
@@ -30,9 +30,9 @@ export function navigateToCheckout(router: Router, params: CheckoutParams) {
     const url = `/checkout?${searchParams.toString()}`;
     console.log("Navigation URL:", url); // Debug log
 
-    router.push(url);
+    await router.push(url);
   } catch (error) {
     console.error("Navigation error in checkout.ts:", error);
-    throw error; // Re-throw to handle in component
+    throw error;
   }
 }

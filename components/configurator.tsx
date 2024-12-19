@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { ConfigState, ConfigMapping, ConfigOption } from '@/types/configurator'
+import { ConfigState, ConfigMapping } from '@/types/configurator'
 
 const configMapping: ConfigMapping = {
   'aaa': { src: '/config/image1.jpg', alt: 'Configuration 1' },

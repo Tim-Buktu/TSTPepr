@@ -1,3 +1,6 @@
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./api/uploadthing/core";
 import { Inter } from 'next/font/google'
 import { AuthProvider } from '@/contexts/auth-context'
 import { AuthSessionProvider } from '@/components/providers/session-provider'
@@ -15,6 +18,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthSessionProvider>
           <AuthProvider>
+            <NextSSRPlugin
+              routerConfig={extractRouterConfig(ourFileRouter)}
+            />
             {children}
           </AuthProvider>
         </AuthSessionProvider>

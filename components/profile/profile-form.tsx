@@ -28,31 +28,37 @@ export function ProfileForm({ user }: ProfileFormProps) {
         body: formData,
       })
 
-      if (!res.ok) throw new Error('Failed to upload image')
+      if (!res.ok) {
+        setError('Failed to upload image')
+        return
+      }
 
       const data = await res.json()
       setImage(data.url)
-    } catch (error) {
+      setError('')
+    } catch (err) {
+      console.error('Upload error:', err)
       setError('Failed to upload image')
     }
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
-
-    const formData = new FormData(e.currentTarget)
-    const data = {
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      phone: formData.get('phone') as string,
-      height: parseFloat(formData.get('height') as string),
-      weight: parseFloat(formData.get('weight') as string),
-      image: image,
-    }
-
+    e.preventDefault();
     try {
+      setLoading(true)
+      setError('')
+
+      const form = e.currentTarget as HTMLFormElement
+      const formData = new FormData(form)
+      const data = {
+        name: formData.get('name') as string,
+        email: formData.get('email') as string,
+        phone: formData.get('phone') as string,
+        height: parseFloat(formData.get('height') as string),
+        weight: parseFloat(formData.get('weight') as string),
+        image: image,
+      }
+
       const res = await fetch('/api/user/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -62,7 +68,8 @@ export function ProfileForm({ user }: ProfileFormProps) {
       if (!res.ok) throw new Error('Failed to update profile')
 
       router.refresh()
-    } catch (error) {
+    } catch (err) {
+      console.error('Profile update failed:', err)
       setError('Failed to update profile')
     } finally {
       setLoading(false)

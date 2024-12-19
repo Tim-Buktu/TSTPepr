@@ -21,6 +21,7 @@ export function PaymentSuccessModal({ isOpen, onClose, orderDetails }: PaymentSu
   if (!isOpen) return null
 
   const handleBackHome = () => {
+    onClose()
     router.push('/')
   }
 

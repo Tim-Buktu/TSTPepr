@@ -11,15 +11,8 @@ import {
   type PantsConfig,
   formatPrice,
 } from "@/config/pants-config";
-import { useRouter } from "next/navigation";
-import { formatToIDR } from "@/lib/checkout";
-import { useSession } from "next-auth/react";
 
 export function PantsConfigurator() {
-  const router = useRouter();
-  const { data: session } = useSession();
-  const [loading, setLoading] = useState(false);
-
   const [config, setConfig] = useState<PantsConfig>({
     fabric: "linen",
     volume: "wide",
@@ -104,33 +97,6 @@ export function PantsConfigurator() {
     const baseCost = 200000;
 
     return Math.round(fabricCost * multiplier + baseCost);
-  };
-
-  const handleBuyNow = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    console.log("Buy Now clicked - Event triggered");
-
-    if (!session?.user) {
-      console.log("User not logged in");
-      return;
-    }
-
-    try {
-      console.log("Attempting navigation...");
-      const params = new URLSearchParams({
-        product: "Custom Fitted Pants",
-        price: calculateTotalCost().toString(),
-        quantity: "1",
-        image: "/pants-preview.jpg",
-      });
-
-      const url = `/checkout?${params.toString()}`;
-      console.log("Navigation URL:", url);
-
-      await router.push(url);
-    } catch (error) {
-      console.error("Navigation error:", error);
-    }
   };
 
   return (
@@ -250,7 +216,7 @@ export function PantsConfigurator() {
                     onClick={() =>
                       setConfig((prev) => ({
                         ...prev,
-                        fabric: fabric.value as any,
+                        fabric: fabric.value as PantsConfig['fabric'],
                       }))
                     }
                     className={`p-4 rounded-xl border-2 transition-all ${
@@ -360,18 +326,9 @@ export function PantsConfigurator() {
             </div>
 
             {/* Buy Button */}
-            <div className="max-w-sm mx-auto mt-8">
-              <button
-                type="button"
-                onClick={handleBuyNow}
-                className="w-full bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!session?.user}
-              >
-                {!session?.user
-                  ? "Sign in to Order"
-                  : `Buy Now - ${formatToIDR(calculateTotalCost())}`}
-              </button>
-            </div>
+            <button className="w-full bg-black text-white py-4 px-8 rounded-xl text-lg font-medium hover:bg-gray-800 transition-colors">
+              Buy Now
+            </button>
           </div>
         </div>
       </div>

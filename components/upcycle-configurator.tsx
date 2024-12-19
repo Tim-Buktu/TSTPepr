@@ -40,13 +40,11 @@ export function UpcycleConfigurator() {
     setUploadedImage(null);
   };
 
-  const handleCustomPatchUpload = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleCustomPatchUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = (e: ProgressEvent<FileReader>) => {
         const result = e.target?.result;
         if (typeof result === "string") {
           setUploadedImage(result);
@@ -76,8 +74,9 @@ export function UpcycleConfigurator() {
     });
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
+  const handleDrop = () => {
+    // We only need to prevent the default behavior
+    // No need for the event parameter if we're not using it
   };
 
   const adjustPatchSize = (increase: boolean) => {
@@ -94,15 +93,20 @@ export function UpcycleConfigurator() {
     return basePrice;
   };
 
-  const handleBuyNow = () => {
-    if (!position) return;
+  const handleBuyNow = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    try {
+      if (!position) return;
 
-    navigateToCheckout(router, {
-      productName: "Upcycled Custom Pants",
-      price: calculateTotal(),
-      quantity: 1,
-      imageUrl: uploadedImage || "/pants-preview.jpg",
-    });
+      await navigateToCheckout(router, {
+        productName: "Upcycled Custom Pants",
+        price: calculateTotal(),
+        quantity: 1,
+        imageUrl: uploadedImage || "/pants-preview.jpg",
+      });
+    } catch (error: unknown) {
+      console.error('Navigation error:', error instanceof Error ? error.message : 'Unknown error');
+    }
   };
 
   return (

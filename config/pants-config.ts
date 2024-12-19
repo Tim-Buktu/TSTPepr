@@ -56,14 +56,6 @@ export type VolumeType = 'wide' | 'pencil';
 export type CutType = 'middle' | '2-line';
 export type ButtonType = 'button' | 'hook';
 
-export interface ConfigOption {
-  id: string;
-  label: string;
-  value: string;
-  price?: number;
-  image?: string;
-}
-
 export const fabricOptions: ConfigOption[] = [
   { 
     id: '1', 
@@ -110,10 +102,18 @@ export const buttonOptions: ConfigOption[] = [
   { id: '2', label: 'Hook', value: 'hook' },
 ];
 
-export interface PantsConfig {
-  fabric: FabricType;
-  volume: VolumeType;
-  cut: CutType;
-  button: ButtonType;
-}
+export type PantsConfig = {
+  fabric: string;
+  volume: string;
+  cut: string;
+  button: string;
+};
+
+export type ConfigOption = {
+  id: string;
+  label: string;
+  value: string;
+  price?: number;
+  image?: string;
+};
 
