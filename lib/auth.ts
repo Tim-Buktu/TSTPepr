@@ -1,5 +1,4 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
@@ -12,13 +11,17 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          prompt: "consent",
           access_type: "offline",
-          response_type: "code"
+          prompt: "select_account"
         }
       }
     }),
   ],
+  pages: {
+    signIn: '/login',
+    error: '/auth/error',
+  },
+  debug: true,
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
@@ -28,5 +31,4 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
-  debug: process.env.NODE_ENV === 'development',
 };
