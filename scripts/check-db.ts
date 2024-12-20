@@ -10,18 +10,18 @@ async function checkDatabase() {
     
     // Test connection
     await prisma.$connect()
-    console.log('Database connection successful')
+    console.log('✅ Database connection successful')
 
-    // Test basic query
+    // Check tables
     const userCount = await prisma.user.count()
-    console.log('User count:', userCount)
+    console.log('Users in database:', userCount)
 
     // Get database info
-    const dbInfo = await prisma.$queryRaw`SELECT current_database(), current_user, version()`
+    const dbInfo = await prisma.$queryRaw`SELECT current_database(), current_user`
     console.log('Database info:', dbInfo)
 
   } catch (error) {
-    console.error('Database check failed:', error)
+    console.error('❌ Database check failed:', error)
   } finally {
     await prisma.$disconnect()
   }

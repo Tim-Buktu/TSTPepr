@@ -13,15 +13,27 @@ export function LoginForm() {
 
   const handleGoogleSignIn = async () => {
     try {
-      await signIn('google', { 
+      const result = await signIn('google', { 
         callbackUrl: '/',
-        redirect: true,
-      })
+        redirect: false,
+      });
+      
+      console.log('Sign in result:', result);
+      
+      if (result?.error) {
+        console.error('Sign in error:', result.error);
+        setError(result.error);
+        return;
+      }
+
+      if (result?.url) {
+        router.push(result.url);
+      }
     } catch (error) {
-      console.error('Google sign in error:', error)
-      setError('Failed to sign in with Google')
+      console.error('Google sign in error:', error);
+      setError('Failed to sign in with Google');
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

@@ -11,28 +11,22 @@ export async function GET() {
       prisma.user.count(),
       prisma.order.count(),
       prisma.patch.count()
-    ]).catch(() => [0, 0, 0]) // Fallback if tables don't exist yet
+    ])
     
     return NextResponse.json({
-      healthy: true,
+      status: 'healthy',
       timestamp: new Date().toISOString(),
-      stats: {
+      counts: {
         users: counts[0],
         orders: counts[1],
         patches: counts[2]
       }
     })
   } catch (error) {
-    // Fixed error response
     return NextResponse.json({
-      healthy: false,
-      error: error instanceof Error ? error.message : 'Database connection failed',
+      status: 'error',
+      message: error instanceof Error ? error.message : 'Database connection failed',
       timestamp: new Date().toISOString()
-    }, { 
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    }, { status: 500 })
   }
 } 
